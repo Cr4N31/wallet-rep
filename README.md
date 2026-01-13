@@ -54,6 +54,7 @@ WalletRep is a frontend React application that allows users to check the reputat
 
 ## Project Structure
 
+
 walletrep/
 │
 ├── src/
@@ -97,6 +98,7 @@ walletrep/
 2. Add pagination for bulk results
 3. Cache previous checks
 4. Improve table UX for large datasets
+
 
    
 ---

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./pages/Header";
+import Header from "./components/Header";
 import Home from "./pages/home"
 import Bulk from "./pages/Bulk"
 import AOS from 'aos';

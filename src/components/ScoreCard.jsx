@@ -1,7 +1,7 @@
 import FactorsList from "./FactorsList";
 
 function ScoreCard({ score, band, factors, summary }) {
-  // Map band to Tailwind text color class
+
   const bandClasses = {
     safe: "text-green-500",
     caution: "text-yellow-500",

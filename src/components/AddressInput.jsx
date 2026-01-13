@@ -1,25 +1,36 @@
 function AddressInput({ address, setAddress, onSubmit }) {
   return (
-    <div className="max-w-md mx-auto mt-16 p-6 bg-white rounded-lg shadow-md" data-aos="fade-up">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-        WalletRep - Wallet Reputation & Score
+    <div
+      className="max-w-2xl mx-auto mt-16 sm:mt-24 px-4 sm:px-6"
+      data-aos="fade-up"
+    >
+      {/* Title */}
+      <h1 className="text-3xl sm:text-4xl font-bold text-white text-center mb-2">
+        Wallet<span className="text-cyan-400">Rep</span>
       </h1>
 
-      <input
-        type="text"
-        placeholder="Input wallet address"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4"
-      />
+      <p className="text-center text-sm sm:text-base text-gray-400 mb-6 sm:mb-8">
+        Instant wallet reputation & risk score powered by on-chain analysis
+      </p>
 
-      <button
-        type="button"
-        onClick={onSubmit}
-        className="w-full bg-teal-500 text-white font-semibold py-2 rounded-md hover:bg-teal-600 transition-colors"
-      >
-        Check
-      </button>
+      {/* Input container */}
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-2 bg-[#0b1220] border border-cyan-500/20 rounded-2xl p-2 shadow-lg shadow-cyan-500/10">
+        <input
+          type="text"
+          placeholder="Enter wallet address (0x...)"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          className="w-full bg-transparent text-gray-200 placeholder-gray-500 px-4 py-3 focus:outline-none text-sm sm:text-base"
+        />
+
+        <button
+          type="button"
+          onClick={onSubmit}
+          className="w-full sm:w-auto flex justify-center items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-black font-semibold px-5 sm:px-6 py-3 rounded-xl transition-all"
+        >
+          Check Wallet
+        </button>
+      </div>
     </div>
   );
 }

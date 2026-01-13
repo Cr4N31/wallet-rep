@@ -16,7 +16,7 @@ function App() {
   return (
     <Router>
           <Header />
-          <div className="min-h-screen bg-gray-100 p-4">
+          <div className="min-h-screen bg-gradient-to-b from-black via-[#050b18] to-black p-4">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/bulk" element={<Bulk />} />

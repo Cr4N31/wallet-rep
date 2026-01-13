@@ -10,10 +10,10 @@ function Bulk() {
   const [loading, setLoading] = useState(false);
 
   const bandClasses = {
-    safe: "text-green-600 font-semibold",
-    caution: "text-yellow-600 font-semibold",
-    risky: "text-red-600 font-semibold",
-    unknown: "text-gray-500 font-semibold",
+    safe: "text-green-400 bg-green-500/10",
+    caution: "text-yellow-400 bg-yellow-500/10",
+    risky: "text-red-400 bg-red-500/10",
+    unknown: "text-gray-400 bg-gray-500/10",
   };
 
   const handleBulkCheck = () => {
@@ -32,7 +32,7 @@ function Bulk() {
 
     setTimeout(() => {
       try {
-        const results = postBulkScore(addresses); // call mock API
+        const results = postBulkScore(addresses);
         setBulkResults(results);
       } catch {
         setError("Could not fetch data, try again later.");
@@ -43,77 +43,103 @@ function Bulk() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-16 p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+    <div className="max-w-6xl mx-auto mt-20 px-6">
+      {/* Header */}
+      <h1 className="text-3xl font-bold text-white text-center mb-2">
         Bulk Wallet Check
       </h1>
+      <p className="text-center text-gray-400 mb-8">
+        Analyze multiple wallets at once using on-chain risk signals
+      </p>
 
-      <textarea
-        placeholder="Paste wallet addresses, one per line"
-        value={addressesText}
-        onChange={(e) => setAddressesText(e.target.value)}
-        className="w-full h-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4 resize-none"
-      ></textarea>
+      {/* Input Card */}
+      <div className="bg-[#0b1220]/80 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-lg shadow-cyan-500/10">
+        <textarea
+          placeholder="Paste wallet addresses (one per line)"
+          value={addressesText}
+          onChange={(e) => setAddressesText(e.target.value)}
+          className="w-full h-44 bg-transparent text-gray-200 placeholder-gray-500 px-4 py-3 border border-cyan-500/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 resize-none"
+        />
 
-      {error && <ErrorMessage message={error} />}
+        {error && <ErrorMessage message={error} />}
 
-      <button
-        type="button"
-        onClick={handleBulkCheck}
-        className="w-full bg-teal-500 text-white font-semibold py-2 rounded-md hover:bg-teal-600 transition-colors mb-4"
-      >
-        Run Bulk Check
-      </button>
+        <button
+          type="button"
+          onClick={handleBulkCheck}
+          className="w-full mt-4 bg-cyan-400 hover:bg-cyan-300 text-black font-semibold py-3 rounded-xl transition-all"
+        >
+          Run Bulk Check
+        </button>
 
-      {loading && <p className="text-center">Loading...</p>}
-        <div>
-            {bulkResults.length > 0 && (
-            <div>
-                <div className="overflow-x-auto mt-4">
-                    <table className="w-full table-auto border-collapse border border-gray-300">
-                        <thead>
-                        <tr className="bg-gray-100">
-                            <th className="border px-4 py-2">Address</th>
-                            <th className="border px-4 py-2">Score</th>
-                            <th className="border px-4 py-2">Band</th>
-                            <th className="border px-4 py-2">Wallet Age</th>
-                            <th className="border px-4 py-2">Scam Interactions</th>
-                            <th className="border px-4 py-2">Tags</th>
-                            <th className="border px-4 py-2">Summary</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {bulkResults.map((row, index) => (
-                            <tr key={index} className="text-center">
-                            <td className="border px-4 py-2">{row.address}</td>
-                            <td className="border px-4 py-2">{row.score}</td>
-                            <td className={`border px-4 py-2 ${bandClasses[row.band]}`}>
-                                {row.band.toUpperCase()}
-                            </td>
-                            <td className="border px-4 py-2">{row.factors.walletAgeDays}</td>
-                            <td className="border px-4 py-2">{row.factors.scamInteractions}</td>
-                            <td className="border px-4 py-2">
-                                {row.tags && row.tags.length > 0 ? row.tags.join(", ") : "None"}
-                            </td>
-                            <td className="border px-4 py-2">{row.summary}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <button
-                        onClick={() => downloadCSV(bulkResults)}
-                        className="relative z-10 mt-10 bottom-4 mt-6 bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600 transition-colors shadow-lg"
-                    >
-                    Download CSV
-                    </button>
-                </div>
-            </div>
-            
+        {loading && (
+          <p className="text-center text-gray-400 mt-4 animate-pulse">
+            Analyzing wallets…
+          </p>
         )}
+      </div>
+
+      {/* Results */}
+      {bulkResults.length > 0 && (
+        <div className="mt-10 bg-[#0b1220]/80 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-lg">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-gray-300">
+              <thead>
+                <tr className="text-left text-gray-400 border-b border-white/10">
+                  <th className="py-3 px-4">Address</th>
+                  <th className="py-3 px-4">Score</th>
+                  <th className="py-3 px-4">Band</th>
+                  <th className="py-3 px-4">Wallet Age</th>
+                  <th className="py-3 px-4">Scam Interactions</th>
+                  <th className="py-3 px-4">Tags</th>
+                  <th className="py-3 px-4">Summary</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {bulkResults.map((row, index) => (
+                  <tr
+                    key={index}
+                    className="border-b border-white/5 hover:bg-white/5 transition"
+                  >
+                    <td className="px-4 py-3 font-mono text-xs">
+                      {row.address}
+                    </td>
+                    <td className="px-4 py-3">{row.score}</td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${bandClasses[row.band]}`}
+                      >
+                        {row.band.toUpperCase()}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      {row.factors.walletAgeDays} days
+                    </td>
+                    <td className="px-4 py-3">
+                      {row.factors.scamInteractions}
+                    </td>
+                    <td className="px-4 py-3">
+                      {row.tags?.length ? row.tags.join(", ") : "None"}
+                    </td>
+                    <td className="px-4 py-3 text-gray-400">
+                      {row.summary}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="flex justify-end mt-6">
+            <button
+              onClick={() => downloadCSV(bulkResults)}
+              className="bg-cyan-400 hover:bg-cyan-300 text-black font-semibold py-2 px-6 rounded-xl transition shadow shadow-cyan-500/20"
+            >
+              Download CSV
+            </button>
+          </div>
         </div>
-   
+      )}
     </div>
   );
 }

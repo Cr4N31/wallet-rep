@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import { useState } from "react";
 import { getScore } from "../utils/address";
 import AddressInput from "../components/AddressInput";

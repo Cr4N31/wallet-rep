@@ -1,7 +1,6 @@
-// src/pages/Bulk.jsx
 import { useState } from "react";
 import { postBulkScore } from "../utils/address";
-import { downloadCSV } from '../utils/csv';
+import { downloadCSV } from "../utils/csv";
 import ErrorMessage from "../components/ErrorMessage";
 
 function Bulk() {
@@ -10,7 +9,6 @@ function Bulk() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Map band to Tailwind color classes
   const bandClasses = {
     safe: "text-green-600 font-semibold",
     caution: "text-yellow-600 font-semibold",
@@ -18,7 +16,6 @@ function Bulk() {
     unknown: "text-gray-500 font-semibold",
   };
 
-  // Handle bulk check
   const handleBulkCheck = () => {
     const addresses = addressesText
       .split("\n")
@@ -46,7 +43,7 @@ function Bulk() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-16 p-6 bg-white rounded-lg shadow-md" data-aos="fade-up">
+    <div className="max-w-4xl mx-auto mt-16 p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
         Bulk Wallet Check
       </h1>
@@ -69,40 +66,54 @@ function Bulk() {
       </button>
 
       {loading && <p className="text-center">Loading...</p>}
-
-      {bulkResults.length > 0 && (
-        <div className="overflow-x-auto mt-4">
-          <table className="w-full table-auto border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border px-4 py-2">Address</th>
-                <th className="border px-4 py-2">Score</th>
-                <th className="border px-4 py-2">Band</th>
-                <th className="border px-4 py-2">Summary</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bulkResults.map((row, index) => (
-                <tr key={index} className="text-center">
-                  <td className="border px-4 py-2">{row.address}</td>
-                  <td className="border px-4 py-2">{row.score}</td>
-                  <td className={`border px-4 py-2 ${bandClasses[row.band]}`}>
-                    {row.band.toUpperCase()}
-                  </td>
-                  <td className="border px-4 py-2">{row.summary}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <button
-            onClick={() => downloadCSV(bulkResults)}
-            className="mt-4 bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600 transition-colors"
-          >
-            Download CSV
-          </button>
+        <div>
+            {bulkResults.length > 0 && (
+            <div>
+                <div className="overflow-x-auto mt-4">
+                    <table className="w-full table-auto border-collapse border border-gray-300">
+                        <thead>
+                        <tr className="bg-gray-100">
+                            <th className="border px-4 py-2">Address</th>
+                            <th className="border px-4 py-2">Score</th>
+                            <th className="border px-4 py-2">Band</th>
+                            <th className="border px-4 py-2">Wallet Age</th>
+                            <th className="border px-4 py-2">Scam Interactions</th>
+                            <th className="border px-4 py-2">Tags</th>
+                            <th className="border px-4 py-2">Summary</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {bulkResults.map((row, index) => (
+                            <tr key={index} className="text-center">
+                            <td className="border px-4 py-2">{row.address}</td>
+                            <td className="border px-4 py-2">{row.score}</td>
+                            <td className={`border px-4 py-2 ${bandClasses[row.band]}`}>
+                                {row.band.toUpperCase()}
+                            </td>
+                            <td className="border px-4 py-2">{row.factors.walletAgeDays}</td>
+                            <td className="border px-4 py-2">{row.factors.scamInteractions}</td>
+                            <td className="border px-4 py-2">
+                                {row.tags && row.tags.length > 0 ? row.tags.join(", ") : "None"}
+                            </td>
+                            <td className="border px-4 py-2">{row.summary}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <button
+                        onClick={() => downloadCSV(bulkResults)}
+                        className="relative z-10 mt-10 bottom-4 mt-6 bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600 transition-colors shadow-lg"
+                    >
+                    Download CSV
+                    </button>
+                </div>
+            </div>
+            
+        )}
         </div>
-      )}
+   
     </div>
   );
 }
